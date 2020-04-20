@@ -1,0 +1,123 @@
+* {
+  box-sizing: border-box;
+}
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+}
+body {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+h1 {
+  font-family: sans-serif;
+  color: coral;
+  font-size: 55px;
+  margin: 30px;
+}
+
+h2 {
+  margin: 0px 0px 30px;
+}
+
+.wrap {
+  display: flex;
+}
+
+.instructions {
+  max-width: 250px;
+  max-height: 500px;
+  margin-right: 60px;
+}
+
+.decode {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+div.grid {
+  width: 200px;
+  height: 500px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+div.grid-item {
+  width: 50px;
+  height: 50px;
+  border: solid 0.5px black;
+}
+
+.solution {
+  width: 200px;
+  height: 50px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-items: center;
+  margin: 20px 0px;
+}
+
+.sol-item {
+  width: 50px;
+  height: 50px;
+}
+
+.palette {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 250px;
+  max-height: 500px;
+  margin-left: 60px;
+}
+
+.palette-item {
+  margin: 3px;
+}
+
+.seagreen-bead {
+  background-color: seagreen;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+}
+
+.purple-bead {
+  background-color: purple;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+}
+
+.blue-bead {
+  background-color: rgb(0, 58, 128);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+}
+
+.coral-bead {
+  background-color: rgb(255, 101, 142);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+}
+
+.teal-bead {
+  background-color: rgb(12, 170, 187);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+}
+
+.yellow-bead {
+  background-color: rgb(219, 237, 25);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+}

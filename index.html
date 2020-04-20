@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles/main.css">
+  <script src="scripts/app.js"></script>
+  <title>Mastermind</title>
+</head>
+<body>
+  <h1>Mastermind</h1>
+  <div class="wrap">
+    <div class="instructions">
+      <h2>Instructions</h2>
+      <p>You have ten chances to try to correctly decode the colour combination and position.</p> 
+      <p>Select four colours to make a guess.  You will receive one black peg for each correct colour and position, one white peg for a correct colour, but incorrect position and an 'x' for each guess where neither the colour or position was correct.</p>
+      <p>Duplicate colours are allowed, but not blanks.</p>
+    </div>
+    
+    <div class="decode">
+      <div class="grid"></div>
+      <div class='solution'></div>
+    </div>
+    <div class="palette">
+      <h2>Select Colours</h2>
+      <div class="palette-item seagreen-bead"></div>
+      <div class="palette-item purple-bead"></div>
+      <div class="palette-item blue-bead"></div>
+      <div class="palette-item coral-bead"></div>
+      <div class="palette-item teal-bead"></div>
+      <div class="palette-item yellow-bead"></div>
+    </div>
+  </div>
+</body>
+</html>
