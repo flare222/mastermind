@@ -13,22 +13,43 @@
     <div class="instructions">
       <h2>Instructions</h2>
       <p>You have ten chances to try to correctly decode the colour combination and position.</p> 
-      <p>Select four colours to make a guess.  You will receive one black peg for each correct colour and position, one white peg for a correct colour, but incorrect position and an 'x' for each guess where neither the colour or position was correct.</p>
+      <p>Select four colours to make a guess.  You will receive one black peg for each correct colour and position, one white peg for a correct colour, but incorrect position and an 'x' for each guess where neither the colour nor position was correct.</p>
       <p>Duplicate colours are allowed, but not blanks.</p>
     </div>
     
     <div class="decode">
-      <div class="grid"></div>
+      <!-- <div class="grid"></div> -->
+      <table class="table"></table>
       <div class='solution'></div>
     </div>
+
     <div class="palette">
       <h2>Select Colours</h2>
-      <div class="palette-item seagreen-bead"></div>
-      <div class="palette-item purple-bead"></div>
-      <div class="palette-item blue-bead"></div>
-      <div class="palette-item coral-bead"></div>
-      <div class="palette-item teal-bead"></div>
-      <div class="palette-item yellow-bead"></div>
+      <label class="container">
+        <input type="radio" name="radio" value="purple">
+        <span class="checkmark purple-bead"></span>
+      </label>
+      <label class="container">
+        <input type="radio" name="radio" value="blue">
+        <span class="checkmark blue-bead"></span>
+      </label>
+      <label class="container">
+        <input type="radio" name="radio" value="coral">
+        <span class="checkmark coral-bead"></span>
+      </label>
+      <label class="container">
+        <input type="radio" name="radio" value="teal">
+        <span class="checkmark teal-bead"></span>
+      </label>
+      <label class="container">
+        <input type="radio" name="radio" value="yellow">
+        <span class="checkmark yellow-bead"></span>
+      </label>
+      <label class="container">
+        <input type="radio" name="radio" value="seagreen-bead">
+        <span class="checkmark seagreen-bead"></span>
+      </label>
+
     </div>
   </div>
 </body>

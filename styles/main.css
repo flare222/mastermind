@@ -46,10 +46,39 @@ div.grid {
   flex-wrap: wrap;
 }
 
-div.grid-item {
+/* div.grid-item {
   width: 50px;
   height: 50px;
   border: solid 0.5px black;
+} */
+
+table {
+  width: 200px;
+  height: 500px;
+  display: flex;
+  flex-wrap: wrap;
+  border: none;
+}
+
+tr {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 200px;
+  height: 50px;
+  border: solid 0.5px black;
+}
+
+.row-selected {
+  border: orangered 3px solid;
+}
+
+.bead {
+  border: rgb(33, 35, 36) solid 2px;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
 }
 
 .solution {
@@ -121,3 +150,38 @@ div.grid-item {
   width: 40px;
   height: 40px;
 }
+
+/* The container */
+.container {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin: 22px;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default radio button */
+.container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Create a custom radio button */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* When the radio button is checked */
+.container input:checked ~ .checkmark {
+  border: rgb(33, 35, 36) solid 2.5px;
+}
+
+
+
