@@ -33,24 +33,17 @@ h2 {
   margin-right: 60px;
 }
 
+.show {
+  display: none;
+}
+
 .decode {
   display: flex;
   align-items: center;
-  flex-direction: column;
-}
-
-div.grid {
-  width: 200px;
-  height: 500px;
-  display: flex;
+  /* flex-direction: column; */
   flex-wrap: wrap;
+  max-width: 400px;
 }
-
-/* div.grid-item {
-  width: 50px;
-  height: 50px;
-  border: solid 0.5px black;
-} */
 
 table {
   width: 200px;
@@ -58,6 +51,8 @@ table {
   display: flex;
   flex-wrap: wrap;
   border: none;
+  background-color: rgb(207, 201, 201);
+  margin: 10px;
 }
 
 tr {
@@ -76,6 +71,7 @@ tr {
 
 .bead {
   border: rgb(33, 35, 36) solid 2px;
+  background-color: white;
   border-radius: 50%;
   width: 40px;
   height: 40px;
@@ -102,7 +98,7 @@ tr {
   align-items: center;
   max-width: 250px;
   max-height: 500px;
-  margin-left: 60px;
+  /* margin-left: 60px; */
 }
 
 .palette-item {
@@ -183,5 +179,27 @@ tr {
   border: rgb(33, 35, 36) solid 2.5px;
 }
 
+.h-board {
+  width: 50px;
+  height: 500px;
+  border: black solid 1px;
+  margin: 10px;
+  background-color: rgb(207, 201, 201);
+}
 
+.h-row {
+  width: 50px;
+  height: 50px;
+  border: rgb(0, 0, 0) solid 1px;
+  display: flex;
+  flex-wrap: wrap;
+}
 
+.h-cell {
+  width: 17px;
+  height: 17px;
+  border: rgb(0, 0, 0) solid 1px;
+  border-radius: 50%;
+  background-color: white;
+  margin: 3px;
+}
