@@ -230,3 +230,30 @@ tr {
   margin-left: auto;
   margin-right: auto;
 }
+
+.black-peg {
+  background-color: black;
+  width: 17px;
+  height: 17px;
+  border: rgb(0, 0, 0) solid 1px;
+  border-radius: 50%;
+  margin: 3px;
+}
+
+.grey-peg {
+  background-color: rgb(60, 59, 59);
+  width: 17px;
+  height: 17px;
+  border: rgb(0, 0, 0) solid 1px;
+  border-radius: 50%;
+  margin: 3px;
+}
+
+.red-peg {
+  background-color: rgb(199, 6, 6);
+  width: 17px;
+  height: 17px;
+  border: rgb(0, 0, 0) solid 1px;
+  border-radius: 50%;
+  margin: 3px;
+}

@@ -6,6 +6,7 @@ function init() {
   const rows = []
   const beads = []
   const hBoard = document.querySelector('.h-board')
+  const hRowArr = []
   const paletteItems = document.querySelectorAll('input[name=radio]')
   const solution = document.querySelector('.solution')
   let sols = []
@@ -49,6 +50,7 @@ function init() {
       hRow.classList.add('h-row')
       hBoard.appendChild(hRow)
       hBoard.firstChild.classList.add('hints')
+      hRowArr.push(hRow)
       for (let j = 0; j < 4; j++) {
         const hCell = document.createElement('div')
         hCell.classList.add('h-cell')
@@ -125,23 +127,16 @@ function init() {
   children.forEach(() => {
     addEventListener('click', setColour)
   })
- 
-  // ! Make a guess
-  // Loop through each row
-  // If class is 'row-selected'
-  // Loop through the beads in that row and make an array containing the guess
-  
-  let guessRow = []
 
-  
   // ! Checks that we are only looking at the selected row
   // ! Populates an array containing the guess elements
   // ! Alerts if the guess row is not populated with four colours
+  let guessRow = []
+
   function checkSelected() {
     for (let i = 0; i < rows.length; i++) {
       if (rows[i].classList.contains('row-selected')) {
         guessRow = Array.from(rows[i].children)
-        // console.log(guessRow)
       }
     }
     guessRow.forEach((guess) => {
@@ -153,10 +148,11 @@ function init() {
     })
   }
 
-  // ! Matches the guess combination array with the solution array
+  // ! Pushes the classes from the guess into an array
+  // ! Pushes the classes from the solution into an array
+  //   The solutions one should be done at creation so code is not duplicated for no reason.  Only one solution per game.
   let checkGuess = []
   let checkSols = []
-  // const hCell = document.querySelectorAll('.h-cell')
   const pegs = []
 
   function pushClasses() {
@@ -166,85 +162,111 @@ function init() {
       checkGuess.push(guessClass)
       checkSols.push(solsClass)
     }
-    console.log('checkSols', checkSols)
-    console.log('checkGuess', checkGuess)
+    // console.log('checkSols', checkSols)
+    // console.log('checkGuess', checkGuess)
   }
 
-  function checkBlack() {
+  // ! Matches the guess combination array with the solution array
+  function checkMatch() {
     for (let i = 0; i < guessRow.length; i++) {
       if (checkGuess[i] === checkSols[i]) {
-        console.log('black', checkGuess[i], checkSols[i])
+        // console.log('black', checkGuess[i], checkSols[i])
         pegs.push('black-peg')
       } else if (checkGuess[i] !== checkSols[i] && checkSols.includes(checkGuess[i])) {
-        console.log('white', checkGuess[i], checkSols[i])
-        pegs.push('white-peg')
+        // console.log('white', checkGuess[i], checkSols[i])
+        pegs.push('grey-peg')
       } else {
-        console.log('X', checkGuess[i])
-        pegs.push('X') 
+        // console.log('X', checkGuess[i])
+        pegs.push('red-peg') 
       }
     }
+    pegs.forEach(peg => {
+      if (peg === 'black-peg') {
+        winner.classList.add('winner')
+      }
+    })
     console.log(pegs)
   }
-  // function checkWinner() {
-  //   for (let i = 0; i < guessRow.length; i++) {
-  //     var guessClass = guessRow[i].getAttribute('class')
-  //     var solsClass = sols[i].getAttribute('class')
-  //     checkGuess.push(guessClass)
-  //     checkSols.push(solsClass)
-  //     console.log('checkSols', checkSols)
-  //     console.log('checkGuess', checkGuess)
 
-  //     if (guessClass === solsClass) {
-  //       console.log('black', guessClass)
-  //       pegs.push('black-peg')
-  //     } else if (checkGuess.length === 4 && checkSols.length === 4) {
-  //       checkGuess.forEach((guess) => {
-  //         if (guess !== solsClass && checkSols.includes(guess)) {
-  //           console.log('white', guess, solsClass)
-  //           pegs.push('white-peg') 
-  //         } else {
-  //           console.log('X', guess)
-  //           pegs.push('X') 
-  //         }
-  //       }
-  //       )
-  //     }
-  //   }
-  //   console.log(pegs)
-  // }
-  
+  // ! Set the pegs 
+  let hCell = null
 
+  function setPegs() {
+    for (let i = 0; i < hRowArr.length; i++) {
+      if (hRowArr[i].classList.contains('hints')) {
+        hCell = Array.from(hRowArr[i].children)
+        console.log(hCell)
+
+        hCell.forEach(cell => {
+          // cell.classList.add(pegs[i++])
+          cell.setAttribute('class', pegs[i++])
+        }) 
+      }
+    }
+    pegs.length = 0
+    // console.log(pegs)
+  }
+
+  // ! Move the selected row to the next one down for game board and hints
+  const selectedRow = document.querySelector('.row-selected')
+  const selectedHintRow = document.querySelector('.hints')
+
+  function selectNextActive() {
+    selectedRow.classList.remove('row-selected')
+    selectedRow.nextElementSibling.classList.add('row-selected')
+
+    selectedHintRow.classList.remove('hints')
+    selectedHintRow.nextElementSibling.classList.add('hints')
+  }
+
+
+  // ! Make a guess by pressing the button to run necessary functions
   
   function guess() {
     checkSelected()
     pushClasses()
-    checkBlack()
-    // checkWinner()
-    const selectedRow = document.querySelector('.row-selected')
-    selectedRow.classList.remove('row-selected')
-    selectedRow.nextElementSibling.classList.add('row-selected')
+    checkMatch()
+    setPegs()
 
+    selectNextActive()
   } 
 
   guessBtn.addEventListener('click', guess)
 
-  // ! Reset Game 
+  // ! Resets Game after winning 
+  // or if reset button is pressed??
   function playAgain() {
     winner.classList.remove('winner')
-    beads.forEach((bead) => {
-      bead.classList.remove(...colours)
-      bead.classList.add('bead')
-      bead.removeAttribute('active')
+
+    beads.forEach(bead => {
+      bead.setAttribute('class', 'bead')
     })
 
-    sols.forEach((sol) => {
-      sol.classList.remove(...colours)
+    sols.forEach(sol => {
+      sol.removeAttribute('class')
+      // sol.classList.remove(...colours)
     })
+
+    console.log(hCell)
+    hCell.forEach(cell => {
+      cell.setAttribute('class', 'h-cell')
+    })
+
+    // rows contains the trs
+    rows.forEach(row => {
+      row.removeAttribute('class')
+    })
+    rows[0].classList.add('row-selected')
+    console.log(rows)
+    
+    // selectedHintRow
+
     generateSolution()
     guessRow = []
     sols = []
     checkGuess = []
     checkSols = []
+    hCell = []
     console.log(guessRow, sols)
     console.log(checkGuess, checkSols)
   }
