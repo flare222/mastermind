@@ -10,6 +10,8 @@ body {
   display: flex;
   align-items: center;
   flex-direction: column;
+  justify-content: center;
+  position: relative;
 }
 
 h1 {
@@ -68,6 +70,9 @@ tr {
 .row-selected {
   border: orangered 3px solid;
 }
+/* .row-not-in-play {
+
+} */
 
 .bead {
   border: rgb(33, 35, 36) solid 2px;
@@ -107,6 +112,7 @@ tr {
 
 .seagreen-bead {
   background-color: seagreen;
+  border: rgb(33, 35, 36) solid 2px;
   border-radius: 50%;
   width: 40px;
   height: 40px;
@@ -114,6 +120,7 @@ tr {
 
 .purple-bead {
   background-color: purple;
+  border: rgb(33, 35, 36) solid 2px;
   border-radius: 50%;
   width: 40px;
   height: 40px;
@@ -121,6 +128,7 @@ tr {
 
 .blue-bead {
   background-color: rgb(0, 58, 128);
+  border: rgb(33, 35, 36) solid 2px;
   border-radius: 50%;
   width: 40px;
   height: 40px;
@@ -128,6 +136,7 @@ tr {
 
 .coral-bead {
   background-color: rgb(255, 101, 142);
+  border: rgb(33, 35, 36) solid 2px;
   border-radius: 50%;
   width: 40px;
   height: 40px;
@@ -135,6 +144,7 @@ tr {
 
 .teal-bead {
   background-color: rgb(12, 170, 187);
+  border: rgb(33, 35, 36) solid 2px;
   border-radius: 50%;
   width: 40px;
   height: 40px;
@@ -142,6 +152,7 @@ tr {
 
 .yellow-bead {
   background-color: rgb(219, 237, 25);
+  border: rgb(33, 35, 36) solid 2px;
   border-radius: 50%;
   width: 40px;
   height: 40px;
@@ -202,4 +213,20 @@ tr {
   border-radius: 50%;
   background-color: white;
   margin: 3px;
+}
+
+.winner {
+  width: 50%;
+  height:50%;
+  background-color: white;
+  border: 3px solid black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
 }

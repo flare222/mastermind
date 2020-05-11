@@ -8,11 +8,13 @@ function init() {
   const hBoard = document.querySelector('.h-board')
   const paletteItems = document.querySelectorAll('input[name=radio]')
   const solution = document.querySelector('.solution')
-  const sols = []
-  const button = document.querySelector('button')
+  let sols = []
+  const guessBtn = document.querySelector('.guess-btn')
+  const playAgainBtn = document.querySelector('.playAgainBtn')
   let colour = null
   const colours = ['purple-bead', 'teal-bead', 'seagreen-bead', 'blue-bead', 'coral-bead', 'yellow-bead']
   let randomColour = (Math.floor(Math.random() * colours.length))
+  const winner = document.querySelector('.wins')
 
   
 
@@ -32,7 +34,7 @@ function init() {
       // add the row to the end of the table body
       tblBody.appendChild(row)
       tblBody.firstChild.classList.add('row-selected')
-      tblBody.firstChild.id = 'row-selected'
+      // tblBody.firstChild.id = 'row-selected'
     }
     // put the <tbody> in the <table>
     tbl.appendChild(tblBody)
@@ -46,6 +48,7 @@ function init() {
       const hRow = document.createElement('div')
       hRow.classList.add('h-row')
       hBoard.appendChild(hRow)
+      hBoard.firstChild.classList.add('hints')
       for (let j = 0; j < 4; j++) {
         const hCell = document.createElement('div')
         hCell.classList.add('h-cell')
@@ -59,7 +62,7 @@ function init() {
   // ! Create Solution Grid
   Array(4 * 1).join('.').split('.').forEach(() => {
     const sol = document.createElement('div')
-    sol.classList.add('sol-item', 'bead')
+    // sol.classList.add('sol-item', 'bead')
     sols.push(sol)
     solution.appendChild(sol)
   })
@@ -87,35 +90,36 @@ function init() {
 
   // ! Set Colours in guess row
   const children = document.querySelectorAll('.bead')
+
   function setColour(e) {
-    if (e.target.classList.contains('bead')) {
+    if (e.target.parentNode.classList.contains('row-selected')) {
       switch (colour) {
         case 'purple':
-          e.target.classList.remove('blue-bead', 'coral-bead', 'teal-bead', 'yellow-bead', 'seagreen-bead')
-          e.target.classList.add('purple-bead')
+          e.target.setAttribute('class','purple-bead')
+          e.target.setAttribute('active','true')
           break
         case 'blue':
-          e.target.classList.remove('purple-bead', 'coral-bead', 'teal-bead', 'yellow-bead', 'seagreen-bead')
-          e.target.classList.add('blue-bead')
+          e.target.setAttribute('class','blue-bead')
+          e.target.setAttribute('active','true')
           break
         case 'coral':
-          e.target.classList.remove('purple-bead', 'blue-bead', 'teal-bead', 'yellow-bead', 'seagreen-bead')
-          e.target.classList.add('coral-bead')
+          e.target.setAttribute('class','coral-bead')
+          e.target.setAttribute('active','true')
           break
         case 'teal':
-          e.target.classList.remove('purple-bead', 'coral-bead', 'blue-bead', 'yellow-bead', 'seagreen-bead')
-          e.target.classList.add('teal-bead')
+          e.target.setAttribute('class','teal-bead')
+          e.target.setAttribute('active','true')
           break
         case 'yellow':
-          e.target.classList.remove('purple-bead', 'coral-bead', 'blue-bead', 'teal-bead', 'seagreen-bead')
-          e.target.classList.add('yellow-bead')
+          e.target.setAttribute('class','yellow-bead')
+          e.target.setAttribute('active','true')
           break
         case 'seagreen':
-          e.target.classList.remove('purple-bead', 'coral-bead', 'blue-bead', 'yellow-bead', 'teal-bead')
-          e.target.classList.add('seagreen-bead')
+          e.target.setAttribute('class','seagreen-bead')
+          e.target.setAttribute('active','true')
           break  
       }
-    }
+    } 
   }
 
   children.forEach(() => {
@@ -125,54 +129,127 @@ function init() {
   // ! Make a guess
   // Loop through each row
   // If class is 'row-selected'
-  // Loop through the beads in that row 
-  // check colours match with solution
-  // move the selected class to the next row
+  // Loop through the beads in that row and make an array containing the guess
   
-  let guessRow = null
-  const guessArr = []
+  let guessRow = []
+
   
-  // ! Checks that we are only looking at one row of four beads at a time
+  // ! Checks that we are only looking at the selected row
+  // ! Populates an array containing the guess elements
+  // ! Alerts if the guess row is not populated with four colours
   function checkSelected() {
     for (let i = 0; i < rows.length; i++) {
       if (rows[i].classList.contains('row-selected')) {
         guessRow = Array.from(rows[i].children)
+        // console.log(guessRow)
       }
     }
-  }
-
-  // ! Populates an array with the guess combination
-  function populateGuess() {
-    for (let i = 0; i < guessRow.length; i++) {
-      // console.log(guessRow[i])
-      for (let j = 0; j < colours.length; j++) {
-        if (guessRow[i].classList.contains(colours[j])) {
-          // console.log('match')
-          guessArr.push(guessRow[i])
-          // console.log(guessArr)
-        }
-      } 
-    }
-    if (guessArr.length < 4) {
-      guessArr.length = 0
-      alert('Please choose 4 colours')
-    }
+    guessRow.forEach((guess) => {
+      if (!guess.hasAttribute('active')) {
+        guessRow.length = 0
+        alert('Please choose 4 colours')
+      }
+      // Else statement to un-grey the check button if there are four with active attributes?
+    })
   }
 
   // ! Matches the guess combination array with the solution array
-  function colourMatch() {
-    guessArr.every(i => sols.includes(i)) ? console.log('match') : console.log('non-match')
-    
+  let checkGuess = []
+  let checkSols = []
+  // const hCell = document.querySelectorAll('.h-cell')
+  const pegs = []
+
+  function pushClasses() {
+    for (let i = 0; i < guessRow.length; i++) {
+      var guessClass = guessRow[i].getAttribute('class')
+      var solsClass = sols[i].getAttribute('class')
+      checkGuess.push(guessClass)
+      checkSols.push(solsClass)
+    }
+    console.log('checkSols', checkSols)
+    console.log('checkGuess', checkGuess)
   }
+
+  function checkBlack() {
+    for (let i = 0; i < guessRow.length; i++) {
+      if (checkGuess[i] === checkSols[i]) {
+        console.log('black', checkGuess[i], checkSols[i])
+        pegs.push('black-peg')
+      } else if (checkGuess[i] !== checkSols[i] && checkSols.includes(checkGuess[i])) {
+        console.log('white', checkGuess[i], checkSols[i])
+        pegs.push('white-peg')
+      } else {
+        console.log('X', checkGuess[i])
+        pegs.push('X') 
+      }
+    }
+    console.log(pegs)
+  }
+  // function checkWinner() {
+  //   for (let i = 0; i < guessRow.length; i++) {
+  //     var guessClass = guessRow[i].getAttribute('class')
+  //     var solsClass = sols[i].getAttribute('class')
+  //     checkGuess.push(guessClass)
+  //     checkSols.push(solsClass)
+  //     console.log('checkSols', checkSols)
+  //     console.log('checkGuess', checkGuess)
+
+  //     if (guessClass === solsClass) {
+  //       console.log('black', guessClass)
+  //       pegs.push('black-peg')
+  //     } else if (checkGuess.length === 4 && checkSols.length === 4) {
+  //       checkGuess.forEach((guess) => {
+  //         if (guess !== solsClass && checkSols.includes(guess)) {
+  //           console.log('white', guess, solsClass)
+  //           pegs.push('white-peg') 
+  //         } else {
+  //           console.log('X', guess)
+  //           pegs.push('X') 
+  //         }
+  //       }
+  //       )
+  //     }
+  //   }
+  //   console.log(pegs)
+  // }
+  
+
   
   function guess() {
     checkSelected()
-    populateGuess
-    colourMatch()
-  }
-  //  
+    pushClasses()
+    checkBlack()
+    // checkWinner()
+    const selectedRow = document.querySelector('.row-selected')
+    selectedRow.classList.remove('row-selected')
+    selectedRow.nextElementSibling.classList.add('row-selected')
 
-  button.addEventListener('click', guess)
+  } 
+
+  guessBtn.addEventListener('click', guess)
+
+  // ! Reset Game 
+  function playAgain() {
+    winner.classList.remove('winner')
+    beads.forEach((bead) => {
+      bead.classList.remove(...colours)
+      bead.classList.add('bead')
+      bead.removeAttribute('active')
+    })
+
+    sols.forEach((sol) => {
+      sol.classList.remove(...colours)
+    })
+    generateSolution()
+    guessRow = []
+    sols = []
+    checkGuess = []
+    checkSols = []
+    console.log(guessRow, sols)
+    console.log(checkGuess, checkSols)
+  }
+
+  playAgainBtn.addEventListener('click', playAgain)
 
   // ! Toggle Instructions
   function toggle() {
