@@ -70,9 +70,6 @@ tr {
 .row-selected {
   border: orangered 3px solid;
 }
-/* .row-not-in-play {
-
-} */
 
 .bead {
   border: rgb(33, 35, 36) solid 2px;
@@ -241,7 +238,7 @@ tr {
 }
 
 .grey-peg {
-  background-color: rgb(60, 59, 59);
+  background-color: rgb(114, 106, 106);
   width: 17px;
   height: 17px;
   border: rgb(0, 0, 0) solid 1px;

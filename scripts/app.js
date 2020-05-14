@@ -1,23 +1,45 @@
 function init() {
-
+  // ! DOM Elements
+  // Div containing instructions to be toggled on/off
   const instructions = document.querySelector('.instructions')
+  // The Game Board is housed in this table
   const tbl = document.querySelector('.table')
   const tblBody = document.createElement('tbody')
-  const rows = []
-  const beads = []
+  // The Hints Board is house in this div
   const hBoard = document.querySelector('.h-board')
-  const hRowArr = []
+  // The radio buttons containing the colour options to choose
   const paletteItems = document.querySelectorAll('input[name=radio]')
+  // The div containing the solution (hidden to player)
   const solution = document.querySelector('.solution')
-  let sols = []
+  // To click when you are ready to make a guess
   const guessBtn = document.querySelector('.guess-btn')
-  const playAgainBtn = document.querySelector('.playAgainBtn')
-  let colour = null
-  const colours = ['purple-bead', 'teal-bead', 'seagreen-bead', 'blue-bead', 'coral-bead', 'yellow-bead']
-  let randomColour = (Math.floor(Math.random() * colours.length))
+  // Div if you win toggles on/off
   const winner = document.querySelector('.wins')
+  // To click if you wish to reset the game
+  const playAgainBtn = document.querySelector('.playAgainBtn')
 
-  
+  // ! Game Variables
+  // An array containing all of the created Game Board table rows
+  const rows = []
+  // An array containing all of the created beads for the Game Board
+  const beads = []
+  // An array containing all of the created Hint Board div rows
+  const hRowArr = []
+  // An array containing all of the hint cells
+  const hCells = []
+  // An array containing the random solution divs (hidden to player)
+  const sols = []
+  // A variable to hold the value of the colour selected by the player
+  let colour = null
+  // An array of colours for the random solution function to choose from
+  const colours = ['purple-bead', 'teal-bead', 'seagreen-bead', 'blue-bead', 'coral-bead', 'yellow-bead']
+  // let randomColour = (Math.floor(Math.random() * colours.length))
+  // An array containing the class attributes of the guess row in play
+  const checkGuess = []
+  // An array containing the class attributes of the randomly generated solution
+  let checkSols = []
+  // An array containing the 
+  const pegs = []
 
   // ! Create Game Board
   function generateTable() {
@@ -42,7 +64,7 @@ function init() {
   }
 
   generateTable()
-
+ 
   // ! Create Hints Board
   function generateHintsBoard() {
     for (let i = 0; i < 10; i++) {
@@ -54,6 +76,7 @@ function init() {
       for (let j = 0; j < 4; j++) {
         const hCell = document.createElement('div')
         hCell.classList.add('h-cell')
+        hCells.push(hCell)
         hRow.appendChild(hCell)
       }
     } 
@@ -64,17 +87,23 @@ function init() {
   // ! Create Solution Grid
   Array(4 * 1).join('.').split('.').forEach(() => {
     const sol = document.createElement('div')
-    // sol.classList.add('sol-item', 'bead')
     sols.push(sol)
     solution.appendChild(sol)
   })
 
+  // ! Generate a random solution (hidden from player)
+  // ! Push the classes into an array which will be checked against the guess classes
   function generateSolution() {
     for (let i = 0; i < sols.length; i++) {
-      randomColour = (Math.floor(Math.random() * colours.length))
+      const randomColour = (Math.floor(Math.random() * colours.length))
+      // const classList = sols[i].getAttribute('class')
       sols[i].classList.add(colours[randomColour])
+      var solsClass = sols[i].getAttribute('class')
+      checkSols.push(solsClass)
     }
+    // console.log('checkSols', checkSols)
   }
+
 
   generateSolution()
 
@@ -144,48 +173,41 @@ function init() {
         guessRow.length = 0
         alert('Please choose 4 colours')
       }
-      // Else statement to un-grey the check button if there are four with active attributes?
+      // Else statement to un-grey the check button if there are four with active attributes? look up disabling buttons (inbuilt method)
     })
   }
-
-  // ! Pushes the classes from the guess into an array
-  // ! Pushes the classes from the solution into an array
-  //   The solutions one should be done at creation so code is not duplicated for no reason.  Only one solution per game.
-  let checkGuess = []
-  let checkSols = []
-  const pegs = []
 
   function pushClasses() {
     for (let i = 0; i < guessRow.length; i++) {
       var guessClass = guessRow[i].getAttribute('class')
-      var solsClass = sols[i].getAttribute('class')
       checkGuess.push(guessClass)
-      checkSols.push(solsClass)
     }
-    // console.log('checkSols', checkSols)
     // console.log('checkGuess', checkGuess)
   }
 
   // ! Matches the guess combination array with the solution array
+  let counter = 0
+
   function checkMatch() {
+    pushClasses()
     for (let i = 0; i < guessRow.length; i++) {
       if (checkGuess[i] === checkSols[i]) {
-        // console.log('black', checkGuess[i], checkSols[i])
+        console.log('black', checkGuess[i], checkSols[i])
         pegs.push('black-peg')
+        counter++
+        if (counter === 4) {
+          winner.classList.add('winner')
+        }
       } else if (checkGuess[i] !== checkSols[i] && checkSols.includes(checkGuess[i])) {
-        // console.log('white', checkGuess[i], checkSols[i])
+        console.log('grey', checkGuess[i], checkSols[i])
         pegs.push('grey-peg')
+
       } else {
-        // console.log('X', checkGuess[i])
+        console.log('red', checkGuess[i], checkSols[i])
         pegs.push('red-peg') 
       }
     }
-    pegs.forEach(peg => {
-      if (peg === 'black-peg') {
-        winner.classList.add('winner')
-      }
-    })
-    console.log(pegs)
+    // console.log(pegs)
   }
 
   // ! Set the pegs 
@@ -195,26 +217,27 @@ function init() {
     for (let i = 0; i < hRowArr.length; i++) {
       if (hRowArr[i].classList.contains('hints')) {
         hCell = Array.from(hRowArr[i].children)
-        console.log(hCell)
-
-        hCell.forEach(cell => {
-          // cell.classList.add(pegs[i++])
-          cell.setAttribute('class', pegs[i++])
-        }) 
+        // console.log(hCell) 
       }
     }
-    pegs.length = 0
-    // console.log(pegs)
   }
 
-  // ! Move the selected row to the next one down for game board and hints
-  const selectedRow = document.querySelector('.row-selected')
-  const selectedHintRow = document.querySelector('.hints')
+  // ! Hint pegs add colours
+  function hintColours() {
+    for (let i = 0; i < hCell.length; i++) {
+      hCell[i].classList.add(pegs[i])
+    }
+    pegs.length = 0
+  }
 
+  // ! Move the selected row to the next one down for both the Game and Hints Board 
   function selectNextActive() {
+    const selectedRow = document.querySelector('.row-selected')
     selectedRow.classList.remove('row-selected')
     selectedRow.nextElementSibling.classList.add('row-selected')
+    
 
+    const selectedHintRow = document.querySelector('.hints')
     selectedHintRow.classList.remove('hints')
     selectedHintRow.nextElementSibling.classList.add('hints')
   }
@@ -224,11 +247,13 @@ function init() {
   
   function guess() {
     checkSelected()
-    pushClasses()
     checkMatch()
     setPegs()
-
+    hintColours()
     selectNextActive()
+    counter = 0
+    checkGuess.length = 0
+    console.log(checkSols)
   } 
 
   guessBtn.addEventListener('click', guess)
@@ -238,37 +263,24 @@ function init() {
   function playAgain() {
     winner.classList.remove('winner')
 
-    beads.forEach(bead => {
-      bead.setAttribute('class', 'bead')
-    })
+    for (let i = 0; i < 40; i++) {
+      beads[i].setAttribute('class', 'bead')
+      hCells[i].setAttribute('class', 'h-cell')
+    }
+
+    for (let i = 0; i < 10; i++) {
+      hRowArr[i].setAttribute('class', 'h-row')
+      rows[i].removeAttribute('class')
+    }
+    hRowArr[0].classList.add('hints')
+    rows[0].classList.add('row-selected')
 
     sols.forEach(sol => {
       sol.removeAttribute('class')
-      // sol.classList.remove(...colours)
     })
 
-    console.log(hCell)
-    hCell.forEach(cell => {
-      cell.setAttribute('class', 'h-cell')
-    })
-
-    // rows contains the trs
-    rows.forEach(row => {
-      row.removeAttribute('class')
-    })
-    rows[0].classList.add('row-selected')
-    console.log(rows)
-    
-    // selectedHintRow
-
-    generateSolution()
-    guessRow = []
-    sols = []
-    checkGuess = []
     checkSols = []
-    hCell = []
-    console.log(guessRow, sols)
-    console.log(checkGuess, checkSols)
+    generateSolution()
   }
 
   playAgainBtn.addEventListener('click', playAgain)
