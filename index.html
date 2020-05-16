@@ -8,56 +8,83 @@
   <title>Mastermind</title>
 </head>
 <body>
-  <h1>Mastermind</h1>
+  <h1>MasterMind</h1>
   <div class="wrap">
-    <div class="instructions">
-      <h2>Instructions</h2>
-      <p>You have ten chances to try to correctly decode the colour combination and position.</p> 
-      <p>Select four colours to make a guess.  You will receive one black peg for each correct colour and position, one grey peg for each correct colour, but incorrect position and one red peg for each guess where neither the colour nor position was correct.</p>
-      <p>Duplicate colours are allowed, but not blanks.</p>
+    <div class="instruc-div">
+      <h2 class="h2">Instructions <span id="arrow">&#x2304</span></h2>
+      <!-- &#x2303 -->
+      <div class="instructions">
+        <p>You have ten chances to try to correctly decode the colour combination and position.</p> 
+        <p>Select four colours to make a guess and you will receive 'hints' to aide in your next guess.
+        </p>
+        <div class="instruc-peg">
+          <div class="black-peg"></div><p>= correct colour and correct position</p>
+        </div>
+        <div class="instruc-peg">
+          <div class="grey-peg"></div><p>= correct colour in an incorrect position</p>
+        </div>
+        <div class="instruc-peg">
+          <div class="red-peg"></div><p>= neither the colour nor position is correct</p>
+        </div>
+        
+        <p>Duplicate colours are allowed, but not blanks.</p>
+      </div>
     </div>
+
     
     <div class="decode">
-      <!-- <div class="grid"></div> -->
+      <div class="button">
+        <button class="guess-btn">Check Guess</button>
+      </div>
+      <div class="palette" id="palette">
+        <!-- <h2>Select Colours</h2> -->
+        <label class="container">
+          <input class="radio" type="radio" name="radio" value="purple">
+          <span class="checkmark purple-bead"></span>
+        </label>
+        <label class="container">
+          <input class="radio" type="radio" name="radio" value="blue">
+          <span class="checkmark blue-bead"></span>
+        </label>
+        <label class="container">
+          <input class="radio" type="radio" name="radio" value="coral">
+          <span class="checkmark coral-bead"></span>
+        </label>
+        <label class="container">
+          <input class="radio" type="radio" name="radio" value="teal">
+          <span class="checkmark teal-bead"></span>
+        </label>
+        <label class="container">
+          <input class="radio" type="radio" name="radio" value="yellow">
+          <span class="checkmark yellow-bead"></span>
+        </label>
+        <label class="container">
+          <input class="radio" type="radio" name="radio" value="seagreen">
+          <span class="checkmark seagreen-bead"></span>
+        </label>
+      </div>
       <table class="table"></table>
-      <button class="guess-btn">check</button>
       <div class="h-board"></div>
-      <div class='solution'></div>
+      <div class="solution"></div>
     </div>
 
-    <div class="palette" id="palette">
-      <h2>Select Colours</h2>
-      <label class="container">
-        <input class="radio" type="radio" name="radio" value="purple">
-        <span class="checkmark purple-bead"></span>
-      </label>
-      <label class="container">
-        <input class="radio" type="radio" name="radio" value="blue">
-        <span class="checkmark blue-bead"></span>
-      </label>
-      <label class="container">
-        <input class="radio" type="radio" name="radio" value="coral">
-        <span class="checkmark coral-bead"></span>
-      </label>
-      <label class="container">
-        <input class="radio" type="radio" name="radio" value="teal">
-        <span class="checkmark teal-bead"></span>
-      </label>
-      <label class="container">
-        <input class="radio" type="radio" name="radio" value="yellow">
-        <span class="checkmark yellow-bead"></span>
-      </label>
-      <label class="container">
-        <input class="radio" type="radio" name="radio" value="seagreen">
-        <span class="checkmark seagreen-bead"></span>
-      </label>
 
-    </div>
   </div>
 
   <div class="wins show">
     <p>Well done! You guessed correctly!</p>
-    <button type="button" class="playAgainBtn">Play again</button>
+    <div class="button-div">
+      <button type="button" class="play-again-btn">Play Again</button>
+      <button type="button" class="close-btn">Close</button>
+    </div> 
+  </div>
+
+  <div class="loses show">
+    <p>Better luck next time!</p>
+    <div class="button-div">
+      <button type="button" class="play-again-btn">Play Again</button>
+      <button type="button" class="close-btn">Close</button>
+    </div> 
   </div>
 </body>
 </html>

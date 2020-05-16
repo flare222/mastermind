@@ -10,29 +10,60 @@ body {
   display: flex;
   align-items: center;
   flex-direction: column;
-  justify-content: center;
+  /* justify-content: center; */
   position: relative;
+  /* overflow: hidden; */
 }
 
 h1 {
   font-family: sans-serif;
   color: coral;
-  font-size: 55px;
-  margin: 30px;
+  font-size: 50px;
+  margin: 10px 30px 0px;
 }
 
 h2 {
-  margin: 0px 0px 30px;
+  /* margin: 0px 0px 30px; */
+  margin: 0;
+  font-family: sans-serif;
+  cursor: pointer;
+  
+}
+
+.symbol {
+  transform: rotate(180deg);
+  display: inline-block;
+}
+
+p {
+  /* display: inline-block; */
+  font-family: sans-serif;
+  line-height: 1.7;
 }
 
 .wrap {
   display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 100vw;
+  margin: auto;
 }
 
+.instruc-div {
+  /* height: 100%; */
+  width: 410px;
+  padding-left: 30px;
+  justify-self: flex-start
+}
 .instructions {
-  max-width: 250px;
-  max-height: 500px;
+  width: 350px;
+  /* padding: 10px 20px; */
   margin-right: 60px;
+  text-align: justify;
+  /* position: absolute;
+  background-color: white;
+  border: 2px solid black;
+  z-index: 1; */
 }
 
 .show {
@@ -41,10 +72,27 @@ h2 {
 
 .decode {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   /* flex-direction: column; */
   flex-wrap: wrap;
+  justify-content: center;
   max-width: 400px;
+}
+
+.button {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+button {
+  height: 40px;
+  color: white;
+  font-family: sans-serif;
+  font-size: 16px;
+  background-color: rgb(69, 177, 96);
+  margin-top: 10px;
+  border: solid 1px black;
+  cursor: pointer;
 }
 
 table {
@@ -52,9 +100,11 @@ table {
   height: 500px;
   display: flex;
   flex-wrap: wrap;
-  border: none;
+  border-right: none;
+  border: solid 1px black;
+  
   background-color: rgb(207, 201, 201);
-  margin: 10px;
+  margin-top: 22px;
 }
 
 tr {
@@ -65,6 +115,7 @@ tr {
   width: 200px;
   height: 50px;
   border: solid 0.5px black;
+  border-right: none;
 }
 
 .row-selected {
@@ -79,6 +130,69 @@ tr {
   height: 40px;
 }
 
+
+/* ! Hint Board Items */
+.h-board {
+  width: 50px;
+  height: 500px;
+  border: black solid 1px;
+  border-left: none;
+  margin-top: 22px;
+  background-color: rgb(207, 201, 201);
+}
+
+.h-row {
+  width: 50px;
+  height: 50px;
+  border: rgb(0, 0, 0) solid 1px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.h-cell {
+  width: 17px;
+  height: 17px;
+  border: rgb(0, 0, 0) solid 1px;
+  border-radius: 50%;
+  background-color: white;
+  margin: 3px;
+}
+
+.black-peg {
+  background-color: black;
+  width: 17px;
+  height: 17px;
+  border: rgb(0, 0, 0) solid 1px;
+  border-radius: 50%;
+  margin: 3px;
+  /* display: inline-block; */
+}
+
+.grey-peg {
+  background-color: rgb(114, 106, 106);
+  width: 17px;
+  height: 17px;
+  border: rgb(0, 0, 0) solid 1px;
+  border-radius: 50%;
+  margin: 3px;
+}
+
+.red-peg {
+  background-color: rgb(199, 6, 6);
+  width: 17px;
+  height: 17px;
+  border: rgb(0, 0, 0) solid 1px;
+  border-radius: 50%;
+  margin: 3px;
+}
+
+.instruc-peg {
+  display: flex;
+  align-items: center;
+}
+
+
+/* ! Solution Items */
 .solution {
   width: 200px;
   height: 50px;
@@ -87,6 +201,12 @@ tr {
   justify-content: space-evenly;
   align-items: center;
   margin: 20px 0px;
+  
+}
+
+.hide-sol {
+  /* visibility: hidden; */
+  display: none;
 }
 
 .sol-item {
@@ -94,6 +214,7 @@ tr {
   height: 50px;
 }
 
+/* ! Palette Items */
 .palette {
   display: flex;
   flex-direction: column;
@@ -116,7 +237,7 @@ tr {
 }
 
 .purple-bead {
-  background-color: purple;
+  background-color: #800080;
   border: rgb(33, 35, 36) solid 2px;
   border-radius: 50%;
   width: 40px;
@@ -124,7 +245,7 @@ tr {
 }
 
 .blue-bead {
-  background-color: rgb(0, 58, 128);
+  background-color: #003a80;
   border: rgb(33, 35, 36) solid 2px;
   border-radius: 50%;
   width: 40px;
@@ -132,7 +253,7 @@ tr {
 }
 
 .coral-bead {
-  background-color: rgb(255, 101, 142);
+  background-color: #ff658e;
   border: rgb(33, 35, 36) solid 2px;
   border-radius: 50%;
   width: 40px;
@@ -184,37 +305,14 @@ tr {
 
 /* When the radio button is checked */
 .container input:checked ~ .checkmark {
-  border: rgb(33, 35, 36) solid 2.5px;
+  /* border: rgb(33, 35, 36) solid 2.5px; */
+  border: orangered 3px solid;
 }
 
-.h-board {
-  width: 50px;
-  height: 500px;
-  border: black solid 1px;
-  margin: 10px;
-  background-color: rgb(207, 201, 201);
-}
-
-.h-row {
-  width: 50px;
-  height: 50px;
-  border: rgb(0, 0, 0) solid 1px;
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.h-cell {
-  width: 17px;
-  height: 17px;
-  border: rgb(0, 0, 0) solid 1px;
-  border-radius: 50%;
-  background-color: white;
-  margin: 3px;
-}
-
-.winner {
-  width: 50%;
-  height:50%;
+/* ! Show/Hide Divs */
+.winner-loser {
+  width: 50vw;
+  height:50vh;
   background-color: white;
   border: 3px solid black;
   display: flex;
@@ -222,35 +320,110 @@ tr {
   align-items: center;
   justify-content: center;
   position: absolute;
+  top: 0;
+  bottom: 0;
   left: 0;
   right: 0;
-  margin-left: auto;
-  margin-right: auto;
+  margin: auto;
+  /* margin-left: auto;
+  margin-right: auto; */
 }
 
-.black-peg {
-  background-color: black;
-  width: 17px;
-  height: 17px;
-  border: rgb(0, 0, 0) solid 1px;
-  border-radius: 50%;
-  margin: 3px;
+/* ! Media Queries */
+/* 350 or smaller screen */
+@media only screen and (max-width: 350px) {
+  table {
+    width: 170px;
+    height: 400px;
+  }
+  
+  tr {
+    width: 170px;
+    height: 40px;
+  }
+  
+  .bead {
+    width: 30px;
+    height: 30px;
+  }
+
+  .h-board {
+    width: 40px;
+    height: 400px;
+  }
+  
+  .h-row {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .h-cell {
+    width: 12px;
+    height: 12px;
+  }
+
+.seagreen-bead {
+  width: 30px;
+  height: 30px;
 }
 
-.grey-peg {
-  background-color: rgb(114, 106, 106);
-  width: 17px;
-  height: 17px;
-  border: rgb(0, 0, 0) solid 1px;
-  border-radius: 50%;
-  margin: 3px;
+.purple-bead {
+  width: 30px;
+  height: 30px;
 }
 
-.red-peg {
-  background-color: rgb(199, 6, 6);
-  width: 17px;
-  height: 17px;
-  border: rgb(0, 0, 0) solid 1px;
-  border-radius: 50%;
-  margin: 3px;
+.blue-bead {
+  width: 30px;
+  height: 30px;
+}
+
+.coral-bead {
+  width: 30px;
+  height: 30px;
+}
+
+.teal-bead {
+  width: 30px;
+  height: 30px;
+}
+
+.yellow-bead {
+  width: 30px;
+  height: 30px;
+}
+}
+
+
+
+/* anything smaller than 830 */
+@media only screen and (max-width: 809px) {
+h2 {
+  padding: 0px 30px;
+}
+
+.winner-loser {
+  width: 70vw;
+}
+
+ .instruc-div {
+  /* width: 100vw; */
+  /* position: absolute;
+  top: 10%; */
+}
+
+  .instructions {
+    width: 100vw;
+    height: 100vh;
+    padding: 10px 30px;
+    /* margin-top: 40px; */
+    text-align: justify;
+    position: absolute;
+    left: 0;
+    background-color: white;
+  z-index: 1;
+  }
+
+  .decode {
+    margin-top: 40px;;
+  }
 }

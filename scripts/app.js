@@ -1,7 +1,9 @@
 function init() {
   // ! DOM Elements
+  const h2Instructions = document.querySelector('.h2')
+  const arrow = document.querySelector('#arrow')
   // Div containing instructions to be toggled on/off
-  const instructions = document.querySelector('.instructions')
+  const instructions = document.querySelector('.instruc-div')
   // The Game Board is housed in this table
   const tbl = document.querySelector('.table')
   const tblBody = document.createElement('tbody')
@@ -13,10 +15,16 @@ function init() {
   const solution = document.querySelector('.solution')
   // To click when you are ready to make a guess
   const guessBtn = document.querySelector('.guess-btn')
-  // Div if you win toggles on/off
+  // Div if you win, visibility toggles on/off
   const winner = document.querySelector('.wins')
+  // Div if you lose, visibility toggles on/off
+  const loser = document.querySelector('.loses')
   // To click if you wish to reset the game
-  const playAgainBtn = document.querySelector('.playAgainBtn')
+  const playAgainBtns = document.querySelectorAll('.play-again-btn')
+  // To close the win window and inspect the results of the game
+  const closeBtns = document.querySelectorAll('.close-btn')
+
+
 
   // ! Game Variables
   // An array containing all of the created Game Board table rows
@@ -89,6 +97,7 @@ function init() {
     const sol = document.createElement('div')
     sols.push(sol)
     solution.appendChild(sol)
+    solution.classList.add('hide-sol')
   })
 
   // ! Generate a random solution (hidden from player)
@@ -96,14 +105,10 @@ function init() {
   function generateSolution() {
     for (let i = 0; i < sols.length; i++) {
       const randomColour = (Math.floor(Math.random() * colours.length))
-      // const classList = sols[i].getAttribute('class')
       sols[i].classList.add(colours[randomColour])
-      var solsClass = sols[i].getAttribute('class')
-      checkSols.push(solsClass)
     }
     // console.log('checkSols', checkSols)
   }
-
 
   generateSolution()
 
@@ -176,40 +181,57 @@ function init() {
       // Else statement to un-grey the check button if there are four with active attributes? look up disabling buttons (inbuilt method)
     })
   }
+  let guessClass
+  let solClass
 
   function pushClasses() {
     for (let i = 0; i < guessRow.length; i++) {
-      var guessClass = guessRow[i].getAttribute('class')
+      guessClass = guessRow[i].getAttribute('class')
       checkGuess.push(guessClass)
+
+      solClass = sols[i].getAttribute('class')
+      checkSols.push(solClass)
     }
     // console.log('checkGuess', checkGuess)
+    // console.log('checkSols', checkSols)
   }
 
   // ! Matches the guess combination array with the solution array
-  let counter = 0
+  let blkCounter = 0
 
   function checkMatch() {
     pushClasses()
+    console.log(checkGuess)
+    console.log(checkSols)
+    
     for (let i = 0; i < guessRow.length; i++) {
-      if (checkGuess[i] === checkSols[i]) {
-        console.log('black', checkGuess[i], checkSols[i])
+      const guessClass = guessRow[i].getAttribute('class')
+      const solClass = sols[i].getAttribute('class')
+      // console.log(guessClass)
+      // console.log(solClass)
+      if (solClass === guessClass) {
+        console.log('black', guessClass, solClass)
         pegs.push('black-peg')
-        counter++
-        if (counter === 4) {
-          winner.classList.add('winner')
+        blkCounter++
+        if (blkCounter === 4) {
+          console.log(blkCounter)
+          winner.setAttribute('class', 'winner-loser')          
+          solution.classList.remove('hide-sol')
         }
-      } else if (checkGuess[i] !== checkSols[i] && checkSols.includes(checkGuess[i])) {
-        console.log('grey', checkGuess[i], checkSols[i])
+      } else if (checkGuess.includes(solClass)) {
+        console.log('grey', guessClass, solClass)
         pegs.push('grey-peg')
-
+        const index = checkGuess.indexOf(solClass)
+        // console.log(index)
+        checkGuess.splice(index, 1)
+        console.log(checkGuess)
       } else {
-        console.log('red', checkGuess[i], checkSols[i])
+        console.log('red', guessClass, solClass)
         pegs.push('red-peg') 
       }
     }
-    // console.log(pegs)
   }
-
+  console.log(checkSols)
   // ! Set the pegs 
   let hCell = null
 
@@ -233,13 +255,20 @@ function init() {
   // ! Move the selected row to the next one down for both the Game and Hints Board 
   function selectNextActive() {
     const selectedRow = document.querySelector('.row-selected')
-    selectedRow.classList.remove('row-selected')
-    selectedRow.nextElementSibling.classList.add('row-selected')
-    
-
-    const selectedHintRow = document.querySelector('.hints')
-    selectedHintRow.classList.remove('hints')
-    selectedHintRow.nextElementSibling.classList.add('hints')
+    console.log('Row Index', rows.indexOf(selectedRow))
+    if (rows.indexOf(selectedRow) === rows.length - 1) {
+      // loser.classList.add('win-lose')
+      loser.setAttribute('class', 'winner-loser')  
+      solution.classList.remove('hide-sol')
+    } else {
+      selectedRow.classList.remove('row-selected')
+      selectedRow.nextElementSibling.classList.add('row-selected')
+  
+  
+      const selectedHintRow = document.querySelector('.hints')
+      selectedHintRow.classList.remove('hints')
+      selectedHintRow.nextElementSibling.classList.add('hints')
+    }
   }
 
 
@@ -251,68 +280,73 @@ function init() {
     setPegs()
     hintColours()
     selectNextActive()
-    counter = 0
+    blkCounter = 0
     checkGuess.length = 0
-    console.log(checkSols)
+    checkSols.length = 0
+    // console.log(checkSols)
   } 
+
+  // ! Toggle Instructions
+  function toggle() {
+    document.querySelector('.instructions').classList.toggle('show')
+    arrow.classList.toggle('symbol')
+  }
+
+  //! Event Listeners 
+  // h2Instructions.onclick = function() {
+  //   toggle()
+  // }
+  console.log(h2Instructions)
+
+  h2Instructions.addEventListener('click', toggle)
 
   guessBtn.addEventListener('click', guess)
 
   // ! Resets Game after winning 
   // or if reset button is pressed??
-  function playAgain() {
-    winner.classList.remove('winner')
+  playAgainBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      winner.classList.remove('winner-loser')
+      loser.classList.remove('winner-loser')
+      winner.classList.add('wins', 'show')
+      loser.classList.add('loses', 'show')
+      solution.classList.add('hide-sol')
+      for (let i = 0; i < 40; i++) {
+        beads[i].setAttribute('class', 'bead')
+        hCells[i].setAttribute('class', 'h-cell')
+      }
 
-    for (let i = 0; i < 40; i++) {
-      beads[i].setAttribute('class', 'bead')
-      hCells[i].setAttribute('class', 'h-cell')
-    }
+      for (let i = 0; i < 10; i++) {
+        hRowArr[i].setAttribute('class', 'h-row')
+        rows[i].removeAttribute('class')
+      }
+      hRowArr[0].classList.add('hints')
+      rows[0].classList.add('row-selected')
 
-    for (let i = 0; i < 10; i++) {
-      hRowArr[i].setAttribute('class', 'h-row')
-      rows[i].removeAttribute('class')
-    }
-    hRowArr[0].classList.add('hints')
-    rows[0].classList.add('row-selected')
+      sols.forEach(sol => {
+        sol.removeAttribute('class')
+      })
 
-    sols.forEach(sol => {
-      sol.removeAttribute('class')
+      checkSols = []
+      generateSolution()
     })
+  })
 
-    checkSols = []
-    generateSolution()
-  }
+  closeBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      winner.classList.remove('winner-loser')
+      loser.classList.remove('winner-loser')
+      winner.classList.add('wins', 'show')
+      loser.classList.add('loses', 'show')
+      // alert(event.target)
+    })
+  })
 
-  playAgainBtn.addEventListener('click', playAgain)
+  // children.forEach(() => {
+  //   addEventListener('click', setColour)
+  // })
 
-  // ! Toggle Instructions
-  function toggle() {
-    document.querySelector('.instructions').classList.toggle('show')
-  }
 
-  //! Event Listeners 
-
-  instructions.onclick = function() {
-    toggle()
-  }
 
 }
 window.addEventListener('DOMContentLoaded', init)
-
-
-
-
-// ! Create Game Board
-// const grid = document.querySelector('.grid')
-// const rows = []
-// const beads = []
-// const width = 1
-// const height = 10
-
-// Array(width * height).join('.').split('.').forEach(() => {
-//   const row = document.createElement('div')
-//   row.classList.add('row')
-//   rows.push(row)
-//   grid.appendChild(row)
-    
-// })
