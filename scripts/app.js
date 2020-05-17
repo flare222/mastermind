@@ -179,14 +179,6 @@ function init() {
     addEventListener(clickEvent, setColour)
   })
 
-  // children.forEach(() => {
-  //   addEventListener('touchstart', setColour)
-  // })
-
-  // children.forEach(() => {
-  //   addEventListener('click', setColour)
-  // })
-
   // ! Checks that we are only looking at the selected row
   // ! Populates an array containing the guess elements
   // ! Checks that the guess row contains active elements before enabling button
@@ -227,8 +219,8 @@ function init() {
 
   function checkMatch() {
     pushClasses()
-    console.log(checkGuess)
-    console.log(checkSols)
+    // console.log(checkGuess)
+    // console.log(checkSols)
     
     for (let i = 0; i < guessRow.length; i++) {
       const guessClass = guessRow[i].getAttribute('class')
@@ -236,23 +228,23 @@ function init() {
       // console.log(guessClass)
       // console.log(solClass)
       if (solClass === guessClass) {
-        console.log('black', guessClass, solClass)
+        // console.log('black', guessClass, solClass)
         pegs.push('black-peg')
         blkCounter++
         if (blkCounter === 4) {
-          console.log(blkCounter)
+          // console.log(blkCounter)
           winner.setAttribute('class', 'winner-loser')          
           solution.classList.remove('hide-sol')
         }
       } else if (checkGuess.includes(solClass)) {
-        console.log('grey', guessClass, solClass)
+        // console.log('grey', guessClass, solClass)
         pegs.unshift('grey-peg')
         const index = checkGuess.indexOf(solClass)
         // console.log(index)
         checkGuess.splice(index, 1)
-        console.log(checkGuess)
+        // console.log(checkGuess)
       } else {
-        console.log('red', guessClass, solClass)
+        // console.log('red', guessClass, solClass)
         pegs.unshift('red-peg') 
       }
     }
@@ -281,7 +273,7 @@ function init() {
   // ! Move the selected row to the next one down for both the Game and Hints Board 
   function selectNextActive() {
     const selectedRow = document.querySelector('.row-selected')
-    console.log('Row Index', rows.indexOf(selectedRow))
+    // console.log('Row Index', rows.indexOf(selectedRow))
     if (rows.indexOf(selectedRow) === rows.length - 1) {
       // loser.classList.add('win-lose')
       loser.setAttribute('class', 'winner-loser')  
