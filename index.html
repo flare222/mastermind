@@ -4,17 +4,36 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="styles/main.css">
+  
   <script src="scripts/app.js"></script>
+  <script src="https://kit.fontawesome.com/a076d05399.js"></script>
   <title>Mastermind</title>
 </head>
 <body>
-  <h1>MasterMind</h1>
+  <div class="h1-div">
+    <h1>MasterMind</h1>
+  </div>
+
+  <div class="burger-wrap">
+    <div class="burger-box">
+      <div class="burger-line"></div>
+      <div class="burger-line"></div>
+      <div class="burger-line"></div>
+    </div>
+    <div class="burger-content show">
+      <a href="https://flare222.github.io/portfolio/" rel="noopener noreferrer" target="_blank"><i class="fas fa-folder"></i></a>
+      <a href="https://twitter.com/flarer222" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
+      <a href="https://www.linkedin.com/in/clare-robertson-ab1ba0142/" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i></a>
+      <a href="https://github.com/flare222" rel="noopener noreferrer" target="_blank"><i class="fab fa-github"></i></a>
+    </div>
+  </div>
+  
   <div class="wrap">
     <div class="instruc-div">
-      <h2 class="h2">Instructions <span id="arrow">&#x2304</span></h2>
-      <!-- &#x2303 -->
+      <h2 class="h2">Instructions <i id="arrow" class="fas fa-arrow-up"></i></h2> 
+
       <div class="instructions">
-        <p>You have ten chances to try to correctly decode the colour combination and position.</p> 
+        <p>You have ten chances to try to correctly decode the colour combination and position.  Duplicate colours are allowed.</p> 
         <p>Select four colours to make a guess and you will receive 'hints' to aide in your next guess.
         </p>
         <div class="instruc-peg">
@@ -26,8 +45,6 @@
         <div class="instruc-peg">
           <div class="red-peg"></div><p>= neither the colour nor position is correct</p>
         </div>
-        
-        <p>Duplicate colours are allowed, but not blanks.</p>
       </div>
     </div>
 
@@ -35,6 +52,7 @@
     <div class="decode">
       <div class="button">
         <button class="guess-btn">Check Guess</button>
+        <button class="play-again-btn">Reset Game</button>
       </div>
       <div class="palette" id="palette">
         <!-- <h2>Select Colours</h2> -->

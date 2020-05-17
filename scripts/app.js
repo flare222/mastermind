@@ -1,9 +1,15 @@
 function init() {
   // ! DOM Elements
+  // Burger Menu button
+  const burgerBtn = document.querySelector('.burger-box')
+  // Burger menu content to be toggled
+  const burgerContent = document.querySelector('.burger-content')
+  // The div wrapping the burger elements
+  const burgerWrap = document.querySelector('.burger-wrap')
+  // The h2 element is clicked to toggle the instructions
   const h2Instructions = document.querySelector('.h2')
+  // Up and down arrow symbol animates when instructions are toggled
   const arrow = document.querySelector('#arrow')
-  // Div containing instructions to be toggled on/off
-  const instructions = document.querySelector('.instruc-div')
   // The Game Board is housed in this table
   const tbl = document.querySelector('.table')
   const tblBody = document.createElement('tbody')
@@ -23,8 +29,6 @@ function init() {
   const playAgainBtns = document.querySelectorAll('.play-again-btn')
   // To close the win window and inspect the results of the game
   const closeBtns = document.querySelectorAll('.close-btn')
-
-
 
   // ! Game Variables
   // An array containing all of the created Game Board table rows
@@ -48,6 +52,15 @@ function init() {
   let checkSols = []
   // An array containing the 
   const pegs = []
+
+  guessBtn.disabled = true
+
+  function toggleBurger() {
+    burgerContent.classList.toggle('show')
+    burgerWrap.classList.toggle('background')
+  }
+
+  burgerBtn.addEventListener('click', toggleBurger)
 
   // ! Create Game Board
   function generateTable() {
@@ -155,6 +168,8 @@ function init() {
           e.target.setAttribute('active','true')
           break  
       }
+      activeCounter++
+      checkSelected()
     } 
   }
 
@@ -164,8 +179,9 @@ function init() {
 
   // ! Checks that we are only looking at the selected row
   // ! Populates an array containing the guess elements
-  // ! Alerts if the guess row is not populated with four colours
+  // ! Checks that the guess row contains active elements before enabling button
   let guessRow = []
+  let activeCounter = 0
 
   function checkSelected() {
     for (let i = 0; i < rows.length; i++) {
@@ -173,14 +189,14 @@ function init() {
         guessRow = Array.from(rows[i].children)
       }
     }
-    guessRow.forEach((guess) => {
-      if (!guess.hasAttribute('active')) {
-        guessRow.length = 0
-        alert('Please choose 4 colours')
+    guessRow.every((guess) => {
+      if (guess.hasAttribute('active') && activeCounter === 4) {
+        guessBtn.disabled = false
       }
-      // Else statement to un-grey the check button if there are four with active attributes? look up disabling buttons (inbuilt method)
     })
   }
+
+
   let guessClass
   let solClass
 
@@ -220,18 +236,18 @@ function init() {
         }
       } else if (checkGuess.includes(solClass)) {
         console.log('grey', guessClass, solClass)
-        pegs.push('grey-peg')
+        pegs.unshift('grey-peg')
         const index = checkGuess.indexOf(solClass)
         // console.log(index)
         checkGuess.splice(index, 1)
         console.log(checkGuess)
       } else {
         console.log('red', guessClass, solClass)
-        pegs.push('red-peg') 
+        pegs.unshift('red-peg') 
       }
     }
   }
-  console.log(checkSols)
+
   // ! Set the pegs 
   let hCell = null
 
@@ -275,7 +291,6 @@ function init() {
   // ! Make a guess by pressing the button to run necessary functions
   
   function guess() {
-    checkSelected()
     checkMatch()
     setPegs()
     hintColours()
@@ -283,6 +298,8 @@ function init() {
     blkCounter = 0
     checkGuess.length = 0
     checkSols.length = 0
+    activeCounter = 0
+    guessBtn.disabled = true
     // console.log(checkSols)
   } 
 
@@ -293,17 +310,11 @@ function init() {
   }
 
   //! Event Listeners 
-  // h2Instructions.onclick = function() {
-  //   toggle()
-  // }
-  console.log(h2Instructions)
-
   h2Instructions.addEventListener('click', toggle)
 
   guessBtn.addEventListener('click', guess)
 
-  // ! Resets Game after winning 
-  // or if reset button is pressed??
+  // ! Resets Game after win/lose if play again or reset button is clicked
   playAgainBtns.forEach((btn) => {
     btn.addEventListener('click', () => {
       winner.classList.remove('winner-loser')
@@ -326,7 +337,7 @@ function init() {
       sols.forEach(sol => {
         sol.removeAttribute('class')
       })
-
+      guessBtn.disabled = true
       checkSols = []
       generateSolution()
     })
