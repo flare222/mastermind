@@ -172,14 +172,20 @@ function init() {
       checkSelected()
     } 
   }
+  const clickEvent = ('ontouchstart' in window ? 'touchend' :
+    'click')
 
   children.forEach(() => {
-    addEventListener('touchStart', setColour)
+    addEventListener(clickEvent, setColour)
   })
 
-  children.forEach(() => {
-    addEventListener('click', setColour)
-  })
+  // children.forEach(() => {
+  //   addEventListener('touchstart', setColour)
+  // })
+
+  // children.forEach(() => {
+  //   addEventListener('click', setColour)
+  // })
 
   // ! Checks that we are only looking at the selected row
   // ! Populates an array containing the guess elements
