@@ -174,6 +174,10 @@ function init() {
   }
 
   children.forEach(() => {
+    addEventListener('touchStart', setColour)
+  })
+
+  children.forEach(() => {
     addEventListener('click', setColour)
   })
 
