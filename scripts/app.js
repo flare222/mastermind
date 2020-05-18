@@ -4,7 +4,7 @@ function init() {
   const burgerBtn = document.querySelector('.burger-box')
   // Burger menu content to be toggled
   const burgerContent = document.querySelector('.burger-content')
-  // The div wrapping the burger elements
+  // The div wrapping the burger elements which changes bg colour
   const burgerWrap = document.querySelector('.burger-wrap')
   // The h2 element is clicked to toggle the instructions
   const h2Instructions = document.querySelector('.h2')
@@ -30,7 +30,9 @@ function init() {
   // To close the win window and inspect the results of the game
   const closeBtns = document.querySelectorAll('.close-btn')
 
-  // ! Game Variables
+  // ! Variables
+  // Use touchscreen or mouse to click
+  const clickEvent = ('ontouchstart' in window ? 'touchend' : 'click')
   // An array containing all of the created Game Board table rows
   const rows = []
   // An array containing all of the created beads for the Game Board
@@ -41,26 +43,41 @@ function init() {
   const hCells = []
   // An array containing the random solution divs (hidden to player)
   const sols = []
-  // A variable to hold the value of the colour selected by the player
+  // A variable to hold the value of the colour selected by the player from the palette
   let colour = null
   // An array of colours for the random solution function to choose from
   const colours = ['purple-bead', 'teal-bead', 'seagreen-bead', 'blue-bead', 'coral-bead', 'yellow-bead']
-  // let randomColour = (Math.floor(Math.random() * colours.length))
+  // An array containing the elements from the selected row
+  let guessRow = []
+  // A counter for the beads that have the active attribute added
+  let activeCounter = 0
+  // A variable to hold the item class before pushing to the checkguess array
+  let guessClass
   // An array containing the class attributes of the guess row in play
   const checkGuess = []
+  // A variable to hold the item class before pushing to the checkSols array
+  let solClass
   // An array containing the class attributes of the randomly generated solution
   let checkSols = []
-  // An array containing the 
+  // An array containing the peg classes 
   const pegs = []
+  // Counts how many black pegs there are to determine the winner
+  let blkCounter = 0
 
-  guessBtn.disabled = true
-
+  // ! Click the burger menu to toggle the content
   function toggleBurger() {
     burgerContent.classList.toggle('show')
     burgerWrap.classList.toggle('background')
   }
 
-  burgerBtn.addEventListener('click', toggleBurger)
+  // ! Toggle Instructions
+  function toggle() {
+    document.querySelector('.instructions').classList.toggle('show')
+    arrow.classList.toggle('symbol')
+  }
+
+  // ! The button to make a guess is initially disabled
+  guessBtn.disabled = true
 
   // ! Create Game Board
   function generateTable() {
@@ -114,77 +131,37 @@ function init() {
   })
 
   // ! Generate a random solution (hidden from player)
-  // ! Push the classes into an array which will be checked against the guess classes
   function generateSolution() {
     for (let i = 0; i < sols.length; i++) {
       const randomColour = (Math.floor(Math.random() * colours.length))
       sols[i].classList.add(colours[randomColour])
     }
-    // console.log('checkSols', checkSols)
   }
 
   generateSolution()
 
-  // ! Choose Colour from palette
+  // ! Choose Colour from palette to use in the player guess
   function chooseColour(e) {
     if (e.target.classList.contains('radio')) { 
       colour = e.target.value 
-      // console.log(colour) 
     }
   }
-  
-  paletteItems.forEach(() => {
-    addEventListener('click', chooseColour)
-  })
 
-  // ! Set Colours in guess row
+  // ! Set chosen colours in the selected row only of the game board
+  // Selects all of the td elements created in the generateTable function
   const children = document.querySelectorAll('.bead')
 
   function setColour(e) {
     if (e.target.parentNode.classList.contains('row-selected')) {
-      switch (colour) {
-        case 'purple':
-          e.target.setAttribute('class','purple-bead')
-          e.target.setAttribute('active','true')
-          break
-        case 'blue':
-          e.target.setAttribute('class','blue-bead')
-          e.target.setAttribute('active','true')
-          break
-        case 'coral':
-          e.target.setAttribute('class','coral-bead')
-          e.target.setAttribute('active','true')
-          break
-        case 'teal':
-          e.target.setAttribute('class','teal-bead')
-          e.target.setAttribute('active','true')
-          break
-        case 'yellow':
-          e.target.setAttribute('class','yellow-bead')
-          e.target.setAttribute('active','true')
-          break
-        case 'seagreen':
-          e.target.setAttribute('class','seagreen-bead')
-          e.target.setAttribute('active','true')
-          break  
-      }
+      e.target.setAttribute('class', colour)
+      e.target.setAttribute('active','true')
       activeCounter++
       checkSelected()
     } 
   }
-  const clickEvent = ('ontouchstart' in window ? 'touchend' :
-    'click')
 
-  children.forEach(() => {
-    addEventListener(clickEvent, setColour)
-  })
-
-  // ! Checks that we are only looking at the selected row
-  // ! Populates an array containing the guess elements
-  // ! Checks that the guess row contains active elements before enabling button
-  let guessRow = []
-  let activeCounter = 0
-
+  // ! Creates an array containing the guess elements from the selected row only
+  // ! Checks that the guess row contains 4 active elements before enabling the guess button
   function checkSelected() {
     for (let i = 0; i < rows.length; i++) {
       if (rows[i].classList.contains('row-selected')) {
@@ -198,10 +175,7 @@ function init() {
     })
   }
 
-
-  let guessClass
-  let solClass
-
+  // ! Pushes the classes from both the solution and the selected row
   function pushClasses() {
     for (let i = 0; i < guessRow.length; i++) {
       guessClass = guessRow[i].getAttribute('class')
@@ -210,29 +184,21 @@ function init() {
       solClass = sols[i].getAttribute('class')
       checkSols.push(solClass)
     }
-    // console.log('checkGuess', checkGuess)
-    // console.log('checkSols', checkSols)
   }
 
   // ! Matches the guess combination array with the solution array
-  let blkCounter = 0
-
+  // ! Pushes the corresponding classes to the pegs array
   function checkMatch() {
     pushClasses()
-    // console.log(checkGuess)
-    // console.log(checkSols)
-    
     for (let i = 0; i < guessRow.length; i++) {
       const guessClass = guessRow[i].getAttribute('class')
       const solClass = sols[i].getAttribute('class')
-      // console.log(guessClass)
-      // console.log(solClass)
       if (solClass === guessClass) {
         // console.log('black', guessClass, solClass)
         pegs.push('black-peg')
+
         blkCounter++
         if (blkCounter === 4) {
-          // console.log(blkCounter)
           winner.setAttribute('class', 'winner-loser')          
           solution.classList.remove('hide-sol')
         }
@@ -240,9 +206,7 @@ function init() {
         // console.log('grey', guessClass, solClass)
         pegs.unshift('grey-peg')
         const index = checkGuess.indexOf(solClass)
-        // console.log(index)
         checkGuess.splice(index, 1)
-        // console.log(checkGuess)
       } else {
         // console.log('red', guessClass, solClass)
         pegs.unshift('red-peg') 
@@ -250,19 +214,19 @@ function init() {
     }
   }
 
-  // ! Set the pegs 
+  // ! Creates an array of the children elements in the correct hint board row
+  // An array containing each cell created in the generateHintsBoard function of the correct hint board row
   let hCell = null
 
   function setPegs() {
     for (let i = 0; i < hRowArr.length; i++) {
       if (hRowArr[i].classList.contains('hints')) {
         hCell = Array.from(hRowArr[i].children)
-        // console.log(hCell) 
       }
     }
   }
 
-  // ! Hint pegs add colours
+  // ! Set the determined peg classes into the cells of the correct hint board row 
   function hintColours() {
     for (let i = 0; i < hCell.length; i++) {
       hCell[i].classList.add(pegs[i])
@@ -271,17 +235,15 @@ function init() {
   }
 
   // ! Move the selected row to the next one down for both the Game and Hints Board 
+  // ! If it's the last row in the board, the game will end
   function selectNextActive() {
     const selectedRow = document.querySelector('.row-selected')
-    // console.log('Row Index', rows.indexOf(selectedRow))
     if (rows.indexOf(selectedRow) === rows.length - 1) {
-      // loser.classList.add('win-lose')
       loser.setAttribute('class', 'winner-loser')  
       solution.classList.remove('hide-sol')
     } else {
       selectedRow.classList.remove('row-selected')
       selectedRow.nextElementSibling.classList.add('row-selected')
-  
   
       const selectedHintRow = document.querySelector('.hints')
       selectedHintRow.classList.remove('hints')
@@ -289,9 +251,7 @@ function init() {
     }
   }
 
-
-  // ! Make a guess by pressing the button to run necessary functions
-  
+  // ! Make a guess by pressing the checkGuess button to run necessary functions
   function guess() {
     checkMatch()
     setPegs()
@@ -302,17 +262,20 @@ function init() {
     checkSols.length = 0
     activeCounter = 0
     guessBtn.disabled = true
-    // console.log(checkSols)
   } 
 
-  // ! Toggle Instructions
-  function toggle() {
-    document.querySelector('.instructions').classList.toggle('show')
-    arrow.classList.toggle('symbol')
-  }
-
   //! Event Listeners 
+  burgerBtn.addEventListener('click', toggleBurger)
+
   h2Instructions.addEventListener('click', toggle)
+
+  paletteItems.forEach(() => {
+    addEventListener('click', chooseColour)
+  })
+
+  children.forEach(() => {
+    addEventListener(clickEvent, setColour)
+  })
 
   guessBtn.addEventListener('click', guess)
 
@@ -351,15 +314,8 @@ function init() {
       loser.classList.remove('winner-loser')
       winner.classList.add('wins', 'show')
       loser.classList.add('loses', 'show')
-      // alert(event.target)
     })
   })
-
-  // children.forEach(() => {
-  //   addEventListener('click', setColour)
-  // })
-
-
 
 }
 window.addEventListener('DOMContentLoaded', init)
