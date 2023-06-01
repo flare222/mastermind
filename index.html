@@ -4,9 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="styles/main.css">
-  
   <script src="scripts/app.js"></script>
-  <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+  <script src="https://kit.fontawesome.com/d00c81d746.js" crossorigin="anonymous"></script>
   <title>Mastermind</title>
 </head>
 <body>
@@ -85,20 +84,21 @@
     </div>
   </div>
 
-  <div class="wins show">
+  <dialog id="winner">
     <p>Well done! You guessed correctly!</p>
     <div class="button-div">
       <button type="button" class="play-again-btn">Play Again</button>
       <button type="button" class="close-btn">Close</button>
     </div> 
-  </div>
+  </dialog>
 
-  <div class="loses show">
+  <dialog id="loser">
     <p>Better luck next time!</p>
     <div class="button-div">
       <button type="button" class="play-again-btn">Play Again</button>
       <button type="button" class="close-btn">Close</button>
     </div> 
-  </div>
+  </dialog>
+  
 </body>
 </html>

@@ -22,9 +22,9 @@ function init() {
   // To click when you are ready to make a guess
   const guessBtn = document.querySelector('.guess-btn')
   // Div if you win, visibility toggles on/off
-  const winner = document.querySelector('.wins')
+  const winner = document.querySelector('#winner')
   // Div if you lose, visibility toggles on/off
-  const loser = document.querySelector('.loses')
+  const loser = document.querySelector('#loser')
   // To click if you wish to reset the game
   const playAgainBtns = document.querySelectorAll('.play-again-btn')
   // To close the win window and inspect the results of the game
@@ -60,7 +60,7 @@ function init() {
   // An array containing the class attributes of the randomly generated solution
   let checkSols = []
   // An array containing the peg classes 
-  const pegs = []
+  let pegs = []
   // Counts how many black pegs there are to determine the winner
   let blkCounter = 0
 
@@ -95,9 +95,8 @@ function init() {
       // add the row to the end of the table body
       tblBody.appendChild(row)
       tblBody.firstChild.classList.add('row-selected')
-      // tblBody.firstChild.id = 'row-selected'
     }
-    // put the <tbody> in the <table>
+    // put the <tbody> inside the <table>
     tbl.appendChild(tblBody)
   }
 
@@ -139,7 +138,6 @@ function init() {
   }
 
   generateSolution()
-  // console.log(sols)
 
   // ! Choose Colour from palette to use in the player guess
   function chooseColour(e) {
@@ -161,25 +159,22 @@ function init() {
     } 
   }
   
-
   // ! Creates an array containing the guess elements from the selected row only
   // ! Checks that the guess row contains 4 active elements before enabling the guess button
   function checkSelected() {
     for (let i = 0; i < rows.length; i++) {
       if (rows[i].classList.contains('row-selected')) {
         guessRow = Array.from(rows[i].children)
-        // console.log(guessRow)
       }
     }
     guessRow.every((guess) => {
       if (guess.hasAttribute('active') && activeCounter === 4) {
-        // console.log(guess)
         guessBtn.disabled = false
       }
     })
   }
 
-  // ! Pushes the classes from both the solution and the selected row
+  // ! Pushes the classes from both the solution and the selected row of guesses
   function pushClasses() {
     for (let i = 0; i < guessRow.length; i++) {
       guessClass = guessRow[i].getAttribute('class')
@@ -189,53 +184,40 @@ function init() {
       checkSols.push(solClass)
     }
   }
+  
+  // ! Matches the guess classes array with the solution classes array
+  // ! Pushes the corresponding hint classes to the pegs array
+  function checkMatch() {
+    pegs = ["red-peg", "red-peg", "red-peg", "red-peg"]
 
-  // ! Matches the guess combination array with the solution array
-  // ! Pushes the corresponding classes to the pegs array
-  function checkBlack() {
-    // console.log('guess array', checkGuess)
-    // console.log('solution array', checkSols)
-    for (let i = 0; i < guessRow.length; i++) {
-      const guessClass = guessRow[i].getAttribute('class')
-      const solClass = sols[i].getAttribute('class')
-      if (guessClass === solClass) {
-        // console.log('black', guessClass, solClass)
-        pegs.push('black-peg')
+    // First checks for any matches resulting in a black peg
+    for (let i = 0; i < checkGuess.length; i++) {
+      if (checkSols[i] === checkGuess[i]) {
         // Find the index of the matching guess
-        const index = checkSols.indexOf(guessClass)
-        // console.log(guessClass, 'appears in the guess & solutions array at index:', index)
-        // remove the matching guessclass from both the sols and guess arrays
-        checkSols.splice(index, 1)
-        checkGuess.splice(index, 1)
-        // console.log('guess array after splice', checkGuess)
-        // console.log('sols array after splice', checkSols)
+        const index = checkSols.indexOf(checkGuess[i])
+        // Change the value of at the matching guess index in the arrays so it won't give a grey match
+        checkSols[index] = "sols-match"
+        checkGuess[index] = "guess-match"
+        pegs.push('black-peg')
+        pegs.shift()
         blkCounter++
+        // If all 4 guesses are correct, we have a winner
         if (blkCounter === 4) {
-          winner.setAttribute('class', 'winner-loser')          
+          winner.showModal()         
           solution.classList.remove('hide-sol')
         }
-      }
+      } 
+  }
+  // Next, checks for colour matches in the wrong location
+  for (let i = 0; i < checkGuess.length; i++) {
+    if (checkSols.includes(checkGuess[i])) {
+      const index = checkSols.indexOf(checkGuess[i])
+      checkSols[index] = "grey"
+      pegs.push('grey-peg')
+      pegs.shift()
     }
   }
-
-  function checkGrey() {
-    for (let i = 0; i < guessRow.length; i++) {
-      if (checkSols.includes(checkGuess[i])) {
-        // console.log('grey peg, as', checkGuess[i], 'is in solutions array', checkSols.includes(checkGuess[i]))
-        pegs.push('grey-peg')
-      }
-    }
-  }
-
-  function checkRed() {
-    for (let i = 0; i < checkSols.length; i++) {
-      if (!checkSols.includes(checkGuess[i]) ) {
-        // console.log('red peg, as', checkGuess[i], 'is not anywhere in the solutions array' )
-        pegs.push('red-peg') 
-      }
-    }
-    // console.log('Final Pegs:', pegs)
-  }
+}
 
   // ! Creates an array of the children elements in the correct hint board row
   // An array containing each cell created in the generateHintsBoard function of the correct hint board row
@@ -262,7 +244,7 @@ function init() {
   function selectNextActive() {
     const selectedRow = document.querySelector('.row-selected')
     if (rows.indexOf(selectedRow) === rows.length - 1) {
-      loser.setAttribute('class', 'winner-loser')  
+      loser.showModal() 
       solution.classList.remove('hide-sol')
     } else {
       selectedRow.classList.remove('row-selected')
@@ -277,9 +259,7 @@ function init() {
   // ! Make a guess by pressing the checkGuess button to run necessary functions
   function guess() {
     pushClasses()
-    checkBlack()
-    checkGrey()
-    checkRed()
+    checkMatch()
     setPegs()
     hintColours()
     selectNextActive()
@@ -295,12 +275,12 @@ function init() {
 
   h2Instructions.addEventListener('click', toggle)
 
-  paletteItems.forEach(() => {
-    addEventListener('click', chooseColour)
+  paletteItems.forEach((colour) => {
+    colour.addEventListener('click', chooseColour)
   })
 
-  children.forEach(() => {
-    addEventListener(clickEvent, setColour)
+  children.forEach((child) => {
+    child.addEventListener(clickEvent, setColour)
   })
 
   guessBtn.addEventListener('click', guess)
@@ -308,10 +288,8 @@ function init() {
   // ! Resets Game after win/lose if play again or reset button is clicked
   playAgainBtns.forEach((btn) => {
     btn.addEventListener('click', () => {
-      winner.classList.remove('winner-loser')
-      loser.classList.remove('winner-loser')
-      winner.classList.add('wins', 'show')
-      loser.classList.add('loses', 'show')
+      winner.close()
+      loser.close()
       solution.classList.add('hide-sol')
       for (let i = 0; i < 40; i++) {
         beads[i].setAttribute('class', 'bead')
@@ -336,14 +314,14 @@ function init() {
 
   closeBtns.forEach((btn) => {
     btn.addEventListener('click', () => {
-      winner.classList.remove('winner-loser')
-      loser.classList.remove('winner-loser')
-      winner.classList.add('wins', 'show')
-      loser.classList.add('loses', 'show')
+      winner.close()
+      loser.close()
     })
   })
 
 }
 window.addEventListener('DOMContentLoaded', init)
 
-// TODO A bug at guess 7 - the button doesn't ungrey and you can't proceed (can't replicate Feb2020)
+// TODO A bug at guess 7 - the button doesn't ungrey and you can't proceed (can't replicate Feb2020, can't replicate May 2023)
+// TODO if you click a guess peg more than once it adds to the activeCounter (Nov 2021)
+// TODO a guess correct on the last row results in a lose pop up window (Nov 2021)

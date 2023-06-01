@@ -10,9 +10,7 @@ body {
   display: flex;
   align-items: center;
   flex-direction: column;
-  /* justify-content: center; */
   position: relative;
-  /* overflow: hidden; */
 }
 
 .h1-div {
@@ -20,8 +18,6 @@ body {
   align-items: center;
   justify-content: space-between;
   max-width: 100vw;
-  /* position: absolute;
-  left: 35% */
 }
 
 h1 {
@@ -82,7 +78,6 @@ i {
 }
 
 h2, h3 {
-  /* margin: 0px 0px 30px; */
   margin: 0;
   font-family: sans-serif;
   cursor: pointer;
@@ -99,7 +94,6 @@ h2, h3 {
 }
 
 p {
-  /* display: inline-block; */
   font-family: sans-serif;
   line-height: 1.7;
   margin: 10px 0px;
@@ -114,20 +108,14 @@ p {
 }
 
 .instruc-div {
-  /* height: 100%; */
   width: 410px;
   padding-left: 30px;
   justify-self: flex-start
 }
 .instructions {
   width: 350px;
-  /* padding: 10px 20px; */
   margin-right: 60px;
   text-align: justify;
-  /* position: absolute;
-  background-color: white;
-  border: 2px solid black;
-  z-index: 1; */
 }
 
 .show {
@@ -137,7 +125,6 @@ p {
 .decode {
   display: flex;
   align-items: flex-start;
-  /* flex-direction: column; */
   flex-wrap: wrap;
   justify-content: center;
   max-width: 400px;
@@ -152,6 +139,7 @@ p {
 
 button {
   height: 40px;
+  min-width: 95px;
   color: white;
   font-family: sans-serif;
   font-size: 16px;
@@ -239,7 +227,6 @@ tr {
   border: rgb(0, 0, 0) solid 1px;
   border-radius: 50%;
   margin: 3px;
-  /* display: inline-block; */
 }
 
 .grey-peg {
@@ -265,7 +252,6 @@ tr {
   align-items: center;
 }
 
-
 /* ! Solution Items */
 .solution {
   width: 200px;
@@ -279,7 +265,6 @@ tr {
 }
 
 .hide-sol {
-  /* visibility: hidden; */
   display: none;
 }
 
@@ -295,7 +280,6 @@ tr {
   align-items: center;
   max-width: 250px;
   max-height: 500px;
-  /* margin-left: 60px; */
 }
 
 .palette-item {
@@ -379,28 +363,17 @@ tr {
 
 /* When the radio button is checked */
 .container input:checked ~ .checkmark {
-  /* border: rgb(33, 35, 36) solid 2.5px; */
   border: orangered 3px solid;
 }
 
-/* ! Show/Hide Divs */
-.winner-loser {
-  width: 50vw;
-  height:50vh;
-  background-color: white;
+/* ! Dialog Modals */
+dialog {
+  padding: 40px;
   border: 3px solid black;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  margin: auto;
-  /* margin-left: auto;
-  margin-right: auto; */
+}
+
+dialog::backdrop {
+  backdrop-filter: blur(2px);
 }
 
 /* ! Media Queries */
@@ -492,11 +465,6 @@ tr {
     right: 2%;
     top: 1%;
   }
-
-  /* .wrap {
-    margin: 10px;
-  } */
-
 }
 
 
